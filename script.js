@@ -28,16 +28,21 @@ const accesoAPI = async () => {
 };
 
 //Función para sacar las coordenadas de los terremotos
+//y añadirle el popup con sus respectivos datos
 const getCoordinates = (datos) => {
 
     datos.forEach(element => {
         const coordinates = element.geometry.coordinates;
-        console.log(coordinates)
         const marker = L.marker([coordinates[1], coordinates[0]]).addTo(map);
+        const magnitude = element.properties.mag;
+        const title = element.properties.title;
+        const code = element.properties.code;
+        const place = element.properties.place;
+        const magType = element.properties.magType;
+        marker.bindPopup(`<b>${title}</b><br>Place:${place}<br>Magnitude & type:${magnitude}${magType}<br>Code:${code}<br>`).openPopup();
     });
+};
 
-
-}
 
 accesoAPI();
 
