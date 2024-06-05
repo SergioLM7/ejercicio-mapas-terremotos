@@ -1,10 +1,64 @@
-h2 {
-    text-align: center;
+body, h2, button, select, input, label, form {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-#map { 
-    height: 90vh; 
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 10px;
 }
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.filters label, .filters select, .filters input {
+    width: 100%;
+}
+
+.filters button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.filters button:hover {
+    background-color: #0056b3;
+}
+
+.maps {
+    
+    background-color: #eaeaea;
+}
+
+#map {
+    width: 100%;
+    height: 100vh;
+    border-radius: 5px;
+}
+
 
 img.huechange { 
     filter: grayscale(100%); 
@@ -31,6 +85,22 @@ img.huechange7 {
 }
 img.huechange8 {
     filter: hue-rotate(34deg);
+}
+
+@media (min-width: 768px) {
+    main {
+        flex-direction: row;
+    }
+
+    .filters {
+        flex: 1;
+        max-width: 300px;
+    }
+
+    .maps {
+        flex: 3;
+        height: auto;
+    }
 }
 
 /*morado= 34 deg

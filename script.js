@@ -4,6 +4,9 @@ const selectMagnitude = document.querySelector('#selectMagnitude');
 const divMapas = document.querySelector('#map');
 const buttonAll = document.querySelector('#allEarthquakes');
 const layerGroup = L.layerGroup();
+const endDateDefault = document.querySelector('#endDate');
+const startDateElement = document.querySelector('#startDate');
+const buttonFilter = document.querySelector('#submitDate');
 let marker;
 
 //Capa del mapa
@@ -24,22 +27,30 @@ buttonAll.addEventListener('click', () => accesoAPI());
 //Evento del filter por magnitud
 selectMagnitude.addEventListener('change', evento => {
     if (evento.target.value === 'desviacion') {
-        accesoAPI2(0, 0.99);
+        accesoAPIMagnitud(0, 0.99);
     } else if (evento.target.value === 'anomalia') {
-        accesoAPI2(1, 1.99);
+        accesoAPIMagnitud(1, 1.99);
     } else if (evento.target.value === 'incidente') {
-        accesoAPI2(2, 2.99);
+        accesoAPIMagnitud(2, 2.99);
     } else if (evento.target.value === 'icidente+') {
-        accesoAPI2(3, 3.99);
+        accesoAPIMagnitud(3, 3.99);
     } else if (evento.target.value === 'accidente') {
-        accesoAPI2(4, 4.99);
+        accesoAPIMagnitud(4, 4.99);
     } else if (evento.target.value === 'accidente+') {
-        accesoAPI2(5, 5.99);
+        accesoAPIMagnitud(5, 5.99);
     } else if (evento.target.value === 'accidente++') {
-        accesoAPI2(6, 6.99);
+        accesoAPIMagnitud(6, 6.99);
     } else if (evento.target.value === 'grave') {
-        accesoAPI2(6.999, 9);
+        accesoAPIMagnitud(6.999, 9);
     }
+});
+
+//Evento para filtrar los terremotos por rango de fechas
+buttonFilter.addEventListener('click', evento => {
+    evento.preventDefault();
+    const startDate = startDateElement.value;
+    const endDate = endDateDefault.value
+    accesoAPIFechas(startDate, endDate);
 });
 
 //FUNCIONES
@@ -59,18 +70,6 @@ const initialLocation = () => {
     };
 };
 
-//Función
-const markersMap = (coords) => {
-    if (map.hasLayer(layerGroup)) {
-      console.log('already have one, clear it');
-      layerGroup.clearLayers();
-    } else {
-      console.log('never have it before');
-      const marker = L.marker(coords);
-      layerGroup.addLayer(marker);
-      map.addLayer(layerGroup);
-    }
-  };
 
 //Función para llamar a la API de los terremotos
 const accesoAPI = async () => {
@@ -142,20 +141,44 @@ const getCoordinates = (datos) => {
 };
 
 //Función para acceder a la API por segunda vez en función de los filtros seleccionados
-const accesoAPI2 = async (minMagnitude, maxMagnitude) => {
+const accesoAPIMagnitud = async (minMagnitude, maxMagnitude) => {
     try {
         const respuesta = await fetch(`https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minmagnitude=${minMagnitude}&maxmagnitude=${maxMagnitude}`,
             { method: 'GET' });
         if (respuesta.ok) {
             let respuestaOK2 = await respuesta.json();
             let datosTerremotos = respuestaOK2.features;
-            if (datosTerremotos.length>0) {
+            if (datosTerremotos.length > 0) {
                 layerGroup.clearLayers();
                 getCoordinates(datosTerremotos);
             } else {
                 alert('No hay terremotos de esta magnitud en nuestros registros.')
             }
-            
+
+        } else {
+            return Promise.reject(new Error(`¡Error HTTP! Estado: ${respuesta.status}`));
+        }
+    } catch (error) {
+        throw console.log(`Este es el error: ${error}`);
+    }
+};
+
+//Función para acceder a la API por segunda vez en función de los filtros seleccionados
+const accesoAPIFechas = async (startDate, endDate) => {
+    try {
+        const respuesta = await fetch(`https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${startDate}&endtime=${endDate}`,
+            { method: 'GET' });
+        if (respuesta.ok) {
+            let respuestaOK3 = await respuesta.json();
+            let datosTerremotos = respuestaOK3.features;
+            console.log(datosTerremotos)
+            if (datosTerremotos.length > 0) {
+                layerGroup.clearLayers();
+                getCoordinates(datosTerremotos);
+            } else {
+                alert('No se registraron terremotos en este rango de fechas.')
+            }
+
         } else {
             return Promise.reject(new Error(`¡Error HTTP! Estado: ${respuesta.status}`));
         }
@@ -167,6 +190,7 @@ const accesoAPI2 = async (minMagnitude, maxMagnitude) => {
 //INVOCACIONES
 mapTile();
 initialLocation();
+
 
 
 
