@@ -39,7 +39,9 @@ const getCoordinates = (datos) => {
         const code = element.properties.code;
         const place = element.properties.place;
         const magType = element.properties.magType;
-        marker.bindPopup(`<b>${title}</b><br>Place:${place}<br>Magnitude & type:${magnitude}${magType}<br>Code:${code}<br>`).openPopup();
+        const date = element.properties.time;
+        const dateToString = new Date (date);
+        marker.bindPopup(`<b>${title}</b><br>Date:${dateToString}<br>Place:${place}<br>Magnitude & type:${magnitude}${magType}<br>Code:${code}<br>`).openPopup();
     });
 };
 
