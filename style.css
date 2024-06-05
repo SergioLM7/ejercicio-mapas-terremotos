@@ -3,5 +3,41 @@ h2 {
 }
 
 #map { 
-    height: 100vh; 
+    height: 90vh; 
 }
+
+img.huechange { 
+    filter: grayscale(100%); 
+}
+
+img.huechange2 {
+    filter: hue-rotate(270deg);
+}
+
+img.huechange3 {
+    filter: hue-rotate(245deg);
+}
+img.huechange4 {
+    filter: hue-rotate(200deg);
+}
+img.huechange5 {
+    filter: hue-rotate(185deg);
+}
+img.huechange6 {
+    filter: hue-rotate(170deg);
+}
+img.huechange7 {
+    filter: hue-rotate(150deg);
+}
+img.huechange8 {
+    filter: hue-rotate(34deg);
+}
+
+/*morado= 34 deg
+rosa = 95
+rojo:150
+naranja 170
+amarillo 185
+amarillo claro 200
+verde oscuro 245
+verde 270*/

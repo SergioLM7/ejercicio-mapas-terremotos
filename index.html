@@ -17,7 +17,25 @@
         <h2>Los últimos terremotos en el mundo</h2>
     </header>
     <main>
+        <section class="filters">
+            <button id="allEarthquakes">Last earthquakes</button>
+            <label for="selectMagnitude">Filter by magnitude:</label>
+            <select id="selectMagnitude" name="selectMagnitude">
+                <option>--selecciona--</option>
+                <option value="desviacion">0-1</option>
+                <option value="anomalia">1-2</option>
+                <option value="incidente">2-3</option>
+                <option value="icidente+">3-4</option>
+                <option value="accidente">4-5</option>
+                <option value="accidente+">5-6</option>
+                <option value="accidente++">6-7</option>
+                <option value="grave">+7</option>
+            </select>
+
+        </section>
+        <section class="maps">
         <div id="map"></div>
+        </section>
     </main>
     <script src="./script.js"></script>
 </body>
