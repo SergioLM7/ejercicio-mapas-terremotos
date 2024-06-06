@@ -7,7 +7,17 @@ const layerGroup = L.layerGroup();
 const endDateDefault = document.querySelector('#endDate');
 const startDateElement = document.querySelector('#startDate');
 const buttonFilter = document.querySelector('#submitDate');
-let marker;
+let markerEarthquakes;
+const myPin = L.icon({
+    iconUrl: './assets/myPin.svg',
+    iconSize:     [44, 44], 
+    shadowSize:   [50, 64], 
+    iconAnchor:   [15, 30], 
+    shadowAnchor: [4, 62],  
+    popupAnchor:  [-3, -76] 
+});
+
+
 
 //Capa del mapa
 const mapTile = () => {
@@ -54,18 +64,18 @@ buttonFilter.addEventListener('click', evento => {
 });
 
 //FUNCIONES
-//Función para configurar el punto inicial del mapa
+//Función para configurar el punto inicial del mapa con geolocalización
 const initialLocation = () => {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(position => {
             let datos = [position.coords.latitude.toFixed(4), position.coords.longitude.toFixed(4)];
             map.setView(datos, 4);
-            L.marker(datos).addTo(map);
+            L.marker(datos, {draggable: true,icon: myPin}).addTo(map);
 
         });
     } else {
         console.warn("Tu navegador no soporta Geolocalización!! ");
-        L.marker([40.25, -3.42]).addTo(map);
+        L.marker([40.25, -3.42], {draggable: true,icon: myPin}).addTo(map);
         map.setView([40.25, -3.42], 4)
     };
 };
@@ -94,8 +104,8 @@ const getCoordinates = (datos) => {
 
     datos.forEach(element => {
         const coordinates = element.geometry.coordinates;
-        marker = L.marker([coordinates[1], coordinates[0]])
-        layerGroup.addLayer(marker);
+        markerEarthquakes = L.marker([coordinates[1], coordinates[0]])
+        layerGroup.addLayer(markerEarthquakes);
         map.addLayer(layerGroup);
         const magnitude = element.properties.mag;
         const title = element.properties.title;
@@ -105,38 +115,24 @@ const getCoordinates = (datos) => {
         const date = element.properties.time;
         const dateToString = new Date(date);
         if (magnitude >= 0 && magnitude < 1) {
-            console.log("huechange")
-            marker._icon.classList.add("huechange");
+            markerEarthquakes._icon.classList.add("huechange");
         } else if (magnitude >= 1 && magnitude < 2) {
-            console.log("huechange2")
-
-            marker._icon.classList.add("huechange2");
+            markerEarthquakes._icon.classList.add("huechange2");
         } else if (magnitude >= 2 && magnitude < 3) {
-            console.log("huechange3")
-
-            marker._icon.classList.add("huechange3");
+            markerEarthquakes._icon.classList.add("huechange3");
         } else if (magnitude >= 3 && magnitude < 4) {
-            console.log("huechange4")
-
-            marker._icon.classList.add("huechange4");
+            markerEarthquakes._icon.classList.add("huechange4");
         } else if (magnitude >= 4 && magnitude < 5) {
-            console.log("huechange5")
-
-            marker._icon.classList.add("huechange5");
+            markerEarthquakes._icon.classList.add("huechange5");
         } else if (magnitude >= 5 && magnitude < 6) {
-            console.log("huechange6")
-
-            marker._icon.classList.add("huechange6");
+            markerEarthquakes._icon.classList.add("huechange6");
         } else if (magnitude >= 6 && magnitude < 7) {
-            console.log("huechange7")
-
-            marker._icon.classList.add("huechange7");
+            markerEarthquakes._icon.classList.add("huechange7");
         } else if (magnitude >= 7) {
-            console.log("huechange8")
-            marker._icon.classList.add("huechange8");
+            markerEarthquakes._icon.classList.add("huechange8");
         }
 
-        marker.bindPopup(`<b>${title}</b><br>Date:${dateToString}<br>Place:${place}<br>Magnitude & type:${magnitude}${magType}<br>Code:${code}<br>`);
+        markerEarthquakes.bindPopup(`<b>${title}</b><br>Date:${dateToString}<br>Place:${place}<br>Magnitude & type:${magnitude}${magType}<br>Code:${code}<br>`);
     });
 };
 
